@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<title>MARKCHAT ❤️</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    margin:0;
+    background: linear-gradient(135deg,#4facfe,#00f2fe);
+}
+h1{
+    margin-top:20px;
+    color:white;
+    font-size:40px;
+}
+#search{
+    margin-top:15px;
+    padding:10px;
+    font-size:16px;
+    width:250px;
+    border-radius:8px;
+    border:none;
+}
+#mojDivVJs{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:20px;
+    margin-top:30px;
+    padding:20px;
+}
+.card{
+    background:white;
+    border-radius:15px;
+    width:220px;
+    padding:15px;
+    box-shadow:0 8px 15px rgba(0,0,0,0.2);
+    transition:transform 0.3s, box-shadow 0.3s;
+    cursor:pointer;
+}
+.card:hover{
+    transform:scale(1.05);
+    box-shadow:0 12px 25px rgba(0,0,0,0.3);
+}
+.card img{
+    width:100%;
+    border-radius:10px;
+}
+.card p{
+    font-weight:bold;
+    margin:10px 0;
+}
+/* MODAL */
+#modal{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+.modalContent{
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    width:300px;
+    text-align:center;
+}
+#modal img{
+    width:150px;
+    border-radius:10px;
+    margin-top:10px;
+}
+#popisok {
+    font-size: 16px;
+    font-style: italic;
+    color: #444;
+    margin: 15px 0;
+    padding: 12px;
+    background: #f4f7f6;
+    border-radius: 8px;
+    border-left: 4px solid #ff4b2b;
+}
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #ff4b2b;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+button:hover {
+    background: #ff416c;
+}
+</style>
+</head>
+<body>
+
+<h1>MARKCHAT ❤️</h1>
+<input id="search" placeholder="Hľadať človeka...">
+<div id="mojDivVJs"></div>
+
+<div id="modal">
+<div class="modalContent">
+<h2 id="personName"></h2>
+<img id="modalImg" src="" alt="">
+<div id="popisok"></div>
+<br>
+<button onclick="zatvorModal()">Zatvoriť</button>
+</div>
+</div>
+
+<script>
+const mojDivVJs = document.getElementById("mojDivVJs")
+const search = document.getElementById("search")
+const modal = document.getElementById("modal")
+const personName = document.getElementById("personName")
+const modalImg = document.getElementById("modalImg")
+const popisok = document.getElementById("popisok")
+
+let vsetciLudia = []
+
+// Databáza originálnych viet
+const vtipneVetyOriginal = [
+    "Miluje pizzu s ananásom a nehanbí sa za to. 🍕",
+    "Ráno nevstane bez dvoch káv, inak pohryzie. ☕",
+    "Hľadá niekoho, kto s ním pôjde na hory a nezomrie. 🏔️",
+    "V noci programuje, cez deň spí. Klasika. 💻",
+    "Ak neznášaš ticho, sme ideálny pár. Ja neprestávam rozprávať. 🗣️",
+    "Vraj viem variť, ale moji priatelia to zatiaľ neprežili. 🍳",
+    "Môj najväčší talent je, že viem zaspať do 30 sekúnd. 😴",
+    "Hľadám parťáka na pozeranie Netflixu a objednávanie jedla. 🎬",
+    "Moje koníčky zahŕňajú dýchanie a vyhýbanie sa dospeláckym povinnostiam. 🤷‍♂️",
+    "Profík v prokrastinácii a hľadaní stratených ponožiek. 🧦",
+    "Ak hľadáš niekoho normálneho, swipe-ni radšej doľava. 🤪",
+    "Viem robiť tie najlepšie palacinky na svete. Možno. 🥞",
+    "Odpovedám na správy buď do 2 sekúnd, alebo do 3 pracovných dní. ⏳",
+    "Môj pes ma má radšej ako ty kedy budeš. 🐶"
+]
+
+// Pomocný zoznam, z ktorého budeme vety vyberať
+let vetyNaVyber = [...vtipneVetyOriginal]
+
+async function nacitajLudi(){
+    try{
+        const response = await fetch("https://markomihalicka.github.io/moj-prvy-backend/data.json")
+        const data = await response.json()
+        
+        // Pri načítaní každému človeku napevno priradíme náhodnú unikátnu vetu
+        vsetciLudia = data.students.map(clovek => {
+            // Ak sme už minuli všetky vety, načítame ich do osudia znova
+            if (vetyNaVyber.length === 0) {
+                vetyNaVyber = [...vtipneVetyOriginal]
+            }
+            
+            const nahodnyIndex = Math.floor(Math.random() * vetyNaVyber.length)
+            const vybranaVeta = vetyNaVyber[nahodnyIndex]
+            
+            // Vymažeme ju, aby ju nedostal nikto iný
+            vetyNaVyber.splice(nahodnyIndex, 1)
+            
+            // Vrátime človeka obohateného o jeho unikátny popisok
+            return { ...clovek, popis: vybranaVeta }
+        })
+        
+        zobrazLudi(vsetciLudia)
+    }catch(err){
+        console.error("Chyba pri načítaní dát:", err)
+        mojDivVJs.innerHTML = "<p style='color:white;'>Nepodarilo sa načítať ľudí 😢</p>"
+    }
+}
+
+function zobrazLudi(zoznam){
+    mojDivVJs.innerHTML=""
+    zoznam.forEach((clovek)=>{
+        const card = document.createElement("div")
+        card.classList.add("card")
+        if(clovek.image){
+            const img = document.createElement("img")
+            img.src = clovek.image
+            img.alt = clovek.name
+            card.appendChild(img)
+        }
+        const nazov = document.createElement("p")
+        nazov.textContent = clovek.name + " " + clovek.surname + " (" + clovek.nickname + ")"
+        card.appendChild(nazov)
+        card.onclick = () => otvorCloveka(clovek)
+        mojDivVJs.appendChild(card)
+    })
+}
+
+function otvorCloveka(clovek){
+    personName.textContent = clovek.name + " " + clovek.surname + " - " + clovek.nickname
+    if(clovek.image) modalImg.src = clovek.image
+    modal.style.display="flex"
+    
+    // Tu len jednoducho vytiahneme vetu, ktorú sme mu pridelili pri načítaní
+    popisok.textContent = clovek.popis
+}
+
+function zatvorModal(){
+    modal.style.display="none"
+}
+
+search.addEventListener("input", ()=>{
+    const text = search.value.toLowerCase()
+    const filtrovane = vsetciLudia.filter(clovek =>
+        (clovek.name + " " + clovek.surname + " " + clovek.nickname).toLowerCase().includes(text)
+    )
+    zobrazLudi(filtrovane)
+})
+
+nacitajLudi()
+</script>
+</body>
+</html>

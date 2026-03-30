@@ -18,23 +18,24 @@ body {
     color: #333;
 }
 
-/* SRDIEČKA */
+/* ❤️ SRDIEČKA */
 .hearts {
     position: fixed;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     top: 0;
     left: 0;
-    z-index: 0;
+    overflow: hidden;
+    z-index: 999;
+    pointer-events: none;
 }
 
 .heart {
     position: absolute;
     bottom: -50px;
-    font-size: 24px;
-    color: rgba(255, 75, 43, 0.6);
+    font-size: 20px;
     animation: floatUp 6s linear infinite;
+    color: rgba(255,75,43,0.6);
 }
 
 @keyframes floatUp {
@@ -42,12 +43,16 @@ body {
     100% { transform: translateY(-110vh); opacity:0; }
 }
 
+/* UI */
+h1, #search, #mojDivVJs {
+    position: relative;
+    z-index: 1;
+}
+
 h1 {
     margin-top: 40px;
     color: #ff4b2b;
     font-size: 48px;
-    position: relative;
-    z-index: 1;
 }
 
 #search {
@@ -56,8 +61,6 @@ h1 {
     width: 280px;
     border-radius: 20px;
     border: 2px solid #ff4b2b;
-    position: relative;
-    z-index: 1;
 }
 
 #mojDivVJs {
@@ -66,8 +69,6 @@ h1 {
     justify-content: center;
     gap: 40px;
     margin-top: 40px;
-    position: relative;
-    z-index: 1;
 }
 
 /* KARTY */
@@ -100,61 +101,93 @@ h1 {
     left:0;
     width:100%;
     height:100%;
-    background: rgba(0,0,0,0.7);
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(5px);
     display:none;
     justify-content:center;
     align-items:center;
+    z-index: 10;
 }
 
 .modalContent {
     background:white;
     padding:20px;
     border-radius:20px;
-    width:350px;
+    width:700px;
+}
+
+/* LAYOUT */
+.profileLayout {
+    display: flex;
+    gap: 20px;
+}
+
+/* LEFT */
+.leftSide {
+    width: 40%;
+}
+
+.leftSide img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+#popisok {
+    background: #fff5f3;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+/* RIGHT */
+.rightSide {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
 }
 
 #chatBox {
-    height:150px;
-    overflow-y:auto;
-    background:#fff0f0;
-    border-radius:10px;
-    padding:10px;
+    height: 250px;
+    overflow-y: auto;
+    background: #fff0f0;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
 }
 
 .message {
-    padding:8px;
-    margin:5px;
-    border-radius:10px;
-    max-width:70%;
+    padding: 8px 12px;
+    margin: 5px;
+    border-radius: 15px;
+    max-width: 70%;
 }
 
 .user {
-    background:#ff4b2b;
-    color:white;
-    margin-left:auto;
+    background: #ff4b2b;
+    color: white;
+    margin-left: auto;
 }
 
 .bot {
-    background:#eee;
+    background: #eee;
 }
 
 #chatInputArea {
-    display:flex;
-    gap:5px;
-    margin-top:10px;
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
 }
 
 #chatInput {
-    flex:1;
-    padding:10px;
+    flex: 1;
+    padding: 10px;
 }
 
 button {
-    padding:10px;
-    background:#ff4b2b;
-    color:white;
-    border:none;
-    border-radius:10px;
+    padding: 10px;
+    background: #ff4b2b;
+    color: white;
+    border: none;
+    border-radius: 10px;
 }
 </style>
 </head>
@@ -164,24 +197,34 @@ button {
 <div class="hearts" id="hearts"></div>
 
 <h1>MARKCHAT ❤️</h1>
-<input id="search" placeholder="Hľadať...">
+<input id="search" placeholder="Hľadať človeka...">
 <div id="mojDivVJs"></div>
 
 <div id="modal">
 <div class="modalContent">
-<h2 id="personName"></h2>
-<img id="modalImg" width="150">
-<div id="popisok"></div>
 
-<div id="chatBox"></div>
+<div class="profileLayout">
 
-<div id="chatInputArea">
-<input id="chatInput" placeholder="Napíš správu...">
-<button onclick="posliSpravu()">Odoslať</button>
+<div class="leftSide">
+    <img id="modalImg">
+    <h2 id="personName"></h2>
+    <div id="popisok"></div>
+</div>
+
+<div class="rightSide">
+    <div id="chatBox"></div>
+
+    <div id="chatInputArea">
+        <input id="chatInput" placeholder="Napíš správu...">
+        <button onclick="posliSpravu()">Odoslať</button>
+    </div>
+</div>
+
 </div>
 
 <br>
 <button onclick="zatvorModal()">Zatvoriť</button>
+
 </div>
 </div>
 
@@ -197,20 +240,30 @@ const chatInput = document.getElementById("chatInput")
 
 let vsetciLudia = []
 
-const vety = [
-"Miluje pizzu 🍕",
-"Ráno bez kávy nefunguje ☕",
-"Hľadá lásku ❤️",
-"Spí celý deň 😴",
-"Miluje Netflix 🎬"
+const vetyOriginal = [
+"Miluje pizzu 🍕","Bez kávy neprežije ☕","Hľadá lásku ❤️","Spí celý deň 😴",
+"Miluje Netflix 🎬","Rád športuje 🏃","Zbožňuje psy 🐶","Hrá hry 🎮",
+"Cestuje 🌍","Je stále hladný 🍔","Miluje hudbu 🎧","Tancuje 💃",
+"Neznáša pondelky 😡","Miluje víkendy 😎","Nočná sova 🌙",
+"Vstáva o 12 ⏰","Miluje memy 😂","Rád sa smeje 😄"
 ]
+
+let vetyNaVyber = [...vetyOriginal]
 
 async function nacitajLudi(){
     const response = await fetch("https://markomihalicka.github.io/moj-prvy-backend/data.json")
     const data = await response.json()
 
     vsetciLudia = data.students.map(c => {
-        return {...c, popis: vety[Math.floor(Math.random()*vety.length)]}
+        if(vetyNaVyber.length === 0){
+            vetyNaVyber = [...vetyOriginal]
+        }
+
+        const i = Math.floor(Math.random()*vetyNaVyber.length)
+        const veta = vetyNaVyber[i]
+        vetyNaVyber.splice(i,1)
+
+        return {...c, popis: veta}
     })
 
     zobrazLudi(vsetciLudia)
@@ -219,15 +272,17 @@ async function nacitajLudi(){
 function zobrazLudi(list){
     mojDivVJs.innerHTML=""
     list.forEach(c=>{
-        const card = document.createElement("div")
+        const card=document.createElement("div")
         card.classList.add("card")
 
-        const img = document.createElement("img")
-        img.src = c.image
-        card.appendChild(img)
+        if(c.image){
+            const img=document.createElement("img")
+            img.src=c.image
+            card.appendChild(img)
+        }
 
-        const p = document.createElement("p")
-        p.textContent = c.name
+        const p=document.createElement("p")
+        p.textContent=c.name+" "+c.surname
         card.appendChild(p)
 
         card.onclick=()=>otvorCloveka(c)
@@ -237,9 +292,9 @@ function zobrazLudi(list){
 
 function otvorCloveka(c){
     modal.style.display="flex"
-    personName.textContent = c.name
-    modalImg.src = c.image
-    popisok.textContent = c.popis
+    personName.textContent=c.name+" "+c.surname
+    modalImg.src=c.image
+    popisok.textContent=c.popis
     chatBox.innerHTML=""
 }
 
@@ -248,13 +303,16 @@ function zatvorModal(){
 }
 
 function posliSpravu(){
-    if(chatInput.value==="") return
+    const text = chatInput.value
+    if(text.trim() === "") return
 
-    pridaj(chatInput.value,"user")
+    pridaj(text,"user")
     chatInput.value=""
 
     setTimeout(()=>{
-        pridaj("Haha 😄","bot")
+        const odpovede = ["Haha 😂","To je dobré 😄","Súhlasím!","Hmm 🤔","Poďme von 😎"]
+        const reply = odpovede[Math.floor(Math.random()*odpovede.length)]
+        pridaj(reply,"bot")
     },1000)
 }
 
@@ -268,10 +326,12 @@ function pridaj(text,typ){
 
 search.addEventListener("input",()=>{
     const t=search.value.toLowerCase()
-    zobrazLudi(vsetciLudia.filter(c=>c.name.toLowerCase().includes(t)))
+    zobrazLudi(vsetciLudia.filter(c =>
+        (c.name+" "+c.surname).toLowerCase().includes(t)
+    ))
 })
 
-function vytvorSrdiecka(){
+function srdiecka(){
     setInterval(()=>{
         const heart=document.createElement("div")
         heart.classList.add("heart")
@@ -283,7 +343,7 @@ function vytvorSrdiecka(){
     },300)
 }
 
-vytvorSrdiecka()
+srdiecka()
 nacitajLudi()
 </script>
 

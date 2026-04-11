@@ -6,9 +6,10 @@
 
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     text-align: center;
     margin: 0;
+    background-color: #ffeef0; 
     background-image: url('image_0.png');
     background-size: cover;
     background-position: center bottom;
@@ -16,216 +17,174 @@ body {
     background-attachment: fixed;
     min-height: 100vh;
     color: #333;
+    overflow-x: hidden;
 }
+
+/* 🧊 HUD PANEL (ĽAVÝ ROH) */
+#hud-profile {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 15px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 8px 32px rgba(255, 75, 43, 0.2);
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hud-avatar {
+    width: 60px;
+    height: 60px;
+    background: #ff4b2b;
+    clip-path: path('M 30,10 C 35,5 45,5 50,10 C 55,15 55,25 50,35 C 45,45 35,55 30,60 C 25,55 15,45 10,35 C 5,25 5,15 10,10 C 15,5 25,5 30,10 Z');
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.hud-info { text-align: left; }
+.hud-info h4 { margin: 0; color: #ff4b2b; font-size: 12px; text-transform: uppercase; }
+.stats { font-size: 20px; font-weight: bold; color: #333; }
+.edit-btn {
+    background: #ff4b2b; color: white; border: none; padding: 5px 12px;
+    border-radius: 10px; font-size: 11px; cursor: pointer; margin-top: 5px; transition: 0.3s;
+}
+.edit-btn:hover { background: #333; }
 
 /* ❤️ SRDIEČKA */
-.hearts {
+.hearts-container {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    z-index: 999;
-    pointer-events: none;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; overflow: hidden;
 }
-
 .heart {
-    position: absolute;
-    bottom: -50px;
-    font-size: 20px;
-    animation: floatUp 6s linear infinite;
-    color: rgba(255,75,43,0.6);
+    position: absolute; bottom: -100px; opacity: 0.6;
+    animation: floatUp linear infinite; user-select: none;
 }
-
 @keyframes floatUp {
-    0% { transform: translateY(0); opacity:1; }
-    100% { transform: translateY(-110vh); opacity:0; }
+    0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.7; }
+    100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
 }
 
 /* UI */
-h1, #search, #mojDivVJs {
-    position: relative;
-    z-index: 1;
-}
-
-h1 {
-    margin-top: 40px;
-    color: #ff4b2b;
-    font-size: 48px;
-}
-
+h1, #search, #mojDivVJs, #modal { position: relative; z-index: 2; }
+h1 { margin-top: 40px; color: #ff4b2b; font-size: 56px; text-shadow: 0 2px 10px white; font-weight: 900; }
 #search {
-    margin-top: 15px;
-    padding: 12px;
-    width: 280px;
-    border-radius: 20px;
-    border: 2px solid #ff4b2b;
+    margin-top: 15px; padding: 15px; width: 300px;
+    border-radius: 30px; border: 2px solid #ff4b2b; outline: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-#mojDivVJs {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 40px;
-    margin-top: 40px;
-}
+#mojDivVJs { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 40px; padding: 40px; }
 
 /* KARTY */
 .card {
-    background: white;
-    width: 300px;
-    height: 300px;
-    cursor: pointer;
+    background: white; width: 300px; height: 300px; cursor: pointer; transition: 0.4s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     clip-path: path('M 150,50 C 180,20 240,20 270,50 C 300,80 300,140 260,200 C 230,250 180,290 150,310 C 120,290 70,250 40,200 C 0,140 0,80 30,50 C 60,20 120,20 150,50 Z');
-    display:flex;
-    flex-direction:column;
-    overflow:hidden;
+    display:flex; flex-direction:column; overflow:hidden;
 }
+.card:hover { transform: scale(1.08) rotate(2deg); }
+.card img { width:100%; height:70%; object-fit:cover; object-position: 50% 10%; }
+.card p { font-weight:bold; margin-top: 15px; font-size: 18px; }
 
-.card img {
-    width:100%;
-    height:70%;
-    object-fit:cover;
-    object-position:50% 10%;
-}
-
-.card p {
-    font-weight:bold;
-}
-
-/* MODAL */
+/* MODAL & VYLEPŠENÝ CHAT */
 #modal {
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(5px);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index: 10;
+    position: fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+    display:none; justify-content:center; align-items:center; z-index: 9999;
 }
-
 .modalContent {
-    background:white;
-    padding:20px;
-    border-radius:20px;
-    width:700px;
+    background: white; padding: 30px; border-radius: 30px;
+    width: 90%; max-width: 800px; box-shadow: 0 25px 50px rgba(0,0,0,0.5);
 }
+.profileLayout { display: flex; gap: 30px; text-align: left; }
+.leftSide { width: 40%; text-align: center; }
+.leftSide img { width: 100%; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+#popisok { background: #fff0f2; padding: 15px; border-radius: 15px; margin-top: 15px; font-style: italic; color: #555; }
 
-/* LAYOUT */
-.profileLayout {
-    display: flex;
-    gap: 20px;
-}
-
-/* LEFT */
-.leftSide {
-    width: 40%;
-}
-
-.leftSide img {
-    width: 100%;
-    border-radius: 15px;
-}
-
-#popisok {
-    background: #fff5f3;
-    padding: 10px;
-    border-radius: 10px;
-}
-
-/* RIGHT */
-.rightSide {
-    width: 60%;
-    display: flex;
-    flex-direction: column;
-}
-
+.rightSide { width: 60%; display: flex; flex-direction: column; }
 #chatBox {
-    height: 250px;
-    overflow-y: auto;
-    background: #fff0f0;
-    border-radius: 10px;
-    padding: 10px;
-    text-align: left;
+    height: 300px; overflow-y: auto;
+    background: linear-gradient(180deg, #fff 0%, #fff5f6 100%);
+    border: 1px solid #ffe0e5; border-radius: 20px; padding: 15px;
+    display: flex; flex-direction: column; gap: 12px;
+    box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
 }
-
-.message {
-    padding: 8px 12px;
-    margin: 5px;
-    border-radius: 15px;
-    max-width: 70%;
-}
-
+.message { padding: 10px 16px; font-size: 14px; max-width: 85%; position: relative; font-weight: 500; }
 .user {
-    background: #ff4b2b;
-    color: white;
-    margin-left: auto;
+    background: linear-gradient(135deg, #ff4b2b 0%, #ff816a 100%); color: white;
+    align-self: flex-end; border-radius: 18px 18px 2px 18px;
+    box-shadow: 0 4px 12px rgba(255, 75, 43, 0.2);
 }
-
 .bot {
-    background: #eee;
+    background: white; color: #444; align-self: flex-start;
+    border-radius: 18px 18px 18px 2px; border: 1px solid #eee;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 #chatInputArea {
-    display: flex;
-    gap: 5px;
-    margin-top: 10px;
+    display: flex; gap: 10px; margin-top: 15px;
+    background: #fdfdfd; padding: 5px; border-radius: 30px; border: 1px solid #eee;
 }
+#chatInput { flex: 1; padding: 12px 20px; border: none; outline: none; background: transparent; }
+.send-btn { background: #ff4b2b; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; transition: 0.3s; }
+.send-btn:hover { background: #333; transform: scale(1.1); }
 
-#chatInput {
-    flex: 1;
-    padding: 10px;
-}
-
-button {
-    padding: 10px;
-    background: #ff4b2b;
-    color: white;
-    border: none;
-    border-radius: 10px;
-}
+.close-btn { margin-top: 25px; background: #333; color: white; padding: 12px 30px; border: none; border-radius: 15px; cursor: pointer; width: 100%; font-weight: bold; }
 </style>
 </head>
 
 <body>
 
-<div class="hearts" id="hearts"></div>
-
-<h1>MARKCHAT ❤️</h1>
-<input id="search" placeholder="Hľadať človeka...">
-<div id="mojDivVJs"></div>
-
-<div id="modal">
-<div class="modalContent">
-
-<div class="profileLayout">
-
-<div class="leftSide">
-    <img id="modalImg">
-    <h2 id="personName"></h2>
-    <div id="popisok"></div>
-</div>
-
-<div class="rightSide">
-    <div id="chatBox"></div>
-
-    <div id="chatInputArea">
-        <input id="chatInput" placeholder="Napíš správu...">
-        <button onclick="posliSpravu()">Odoslať</button>
+<div id="hud-profile">
+    <div class="hud-avatar">M</div>
+    <div class="hud-info">
+        <h4>Tvoj Profil</h4>
+        <div class="stats">❤️ <span id="match-count">128</span></div>
+        <button class="edit-btn" onclick="alert('Upraviť profil sa bude dať v ďalšej verzii!')">UPRAVIŤ</button>
     </div>
 </div>
 
-</div>
+<div class="hearts-container" id="heartsContainer"></div>
 
-<br>
-<button onclick="zatvorModal()">Zatvoriť</button>
+<h1>MARKCHAT ❤️</h1>
+<input id="search" placeholder="Hľadať spriaznenú dušu...">
+<div id="mojDivVJs"></div>
 
-</div>
+<div id="modal">
+    <div class="modalContent">
+        <div class="profileLayout">
+            <div class="leftSide">
+                <img id="modalImg">
+                <h2 id="personName"></h2>
+                <div id="popisok"></div>
+            </div>
+            <div class="rightSide">
+                <div id="chatBox"></div>
+                <div id="chatInputArea">
+                    <input id="chatInput" placeholder="Napíš správu...">
+                    <button class="send-btn" onclick="posliSpravu()">➤</button>
+                </div>
+                <div style="display:flex; gap:10px; margin-top:10px; justify-content:center;">
+                    <span style="cursor:pointer; font-size:20px;" onclick="rychlaSprava('👋')">👋</span>
+                    <span style="cursor:pointer; font-size:20px;" onclick="rychlaSprava('🔥')">🔥</span>
+                    <span style="cursor:pointer; font-size:20px;" onclick="rychlaSprava('🌹')">🌹</span>
+                </div>
+            </div>
+        </div>
+        <button class="close-btn" onclick="zatvorModal()">ZATVORIŤ CHAT</button>
+    </div>
 </div>
 
 <script>
@@ -237,54 +196,60 @@ const modalImg = document.getElementById("modalImg")
 const popisok = document.getElementById("popisok")
 const chatBox = document.getElementById("chatBox")
 const chatInput = document.getElementById("chatInput")
+const matchCountDisplay = document.getElementById("match-count")
 
 let vsetciLudia = []
+let matches = 128
 
-const vetyOriginal = [
-"Miluje pizzu 🍕","Bez kávy neprežije ☕","Hľadá lásku ❤️","Spí celý deň 😴",
-"Miluje Netflix 🎬","Rád športuje 🏃","Zbožňuje psy 🐶","Hrá hry 🎮",
-"Cestuje 🌍","Je stále hladný 🍔","Miluje hudbu 🎧","Tancuje 💃",
-"Neznáša pondelky 😡","Miluje víkendy 😎","Nočná sova 🌙",
-"Vstáva o 12 ⏰","Miluje memy 😂","Rád sa smeje 😄"
-]
-
+const vetyOriginal = ["Miluje pizzu 🍕","Bez kávy neprežije ☕","Hľadá lásku ❤️","Miluje Netflix 🎬","Rád športuje 🏃","Zbožňuje psy 🐶","Hrá hry 🎮","Cestuje 🌍"]
 let vetyNaVyber = [...vetyOriginal]
 
+// NÁHODNÉ ŠTATISTIKY
+function updateStats() {
+    const prirastok = Math.floor(Math.random() * 3)
+    matches += prirastok
+    matchCountDisplay.innerText = matches
+    if(prirastok > 0) {
+        matchCountDisplay.style.color = "#ff4b2b";
+        setTimeout(() => { matchCountDisplay.style.color = "#333" }, 500)
+    }
+}
+setInterval(updateStats, 5000)
+
+// ✨ UPRAVENÁ FUNKCIA: Načítanie a zmena Alžbetinej fotky
 async function nacitajLudi(){
-    const response = await fetch("https://markomihalicka.github.io/moj-prvy-backend/data.json")
-    const data = await response.json()
-
-    vsetciLudia = data.students.map(c => {
-        if(vetyNaVyber.length === 0){
-            vetyNaVyber = [...vetyOriginal]
-        }
-
-        const i = Math.floor(Math.random()*vetyNaVyber.length)
-        const veta = vetyNaVyber[i]
-        vetyNaVyber.splice(i,1)
-
-        return {...c, popis: veta}
-    })
-
-    zobrazLudi(vsetciLudia)
+    try {
+        const res = await fetch("https://markomihalicka.github.io/moj-prvy-backend/data.json")
+        const data = await res.json()
+        
+        vsetciLudia = data.students.map(c => {
+            if(vetyNaVyber.length === 0) vetyNaVyber = [...vetyOriginal]
+            const i = Math.floor(Math.random()*vetyNaVyber.length)
+            const veta = vetyNaVyber[i]
+            vetyNaVyber.splice(i,1)
+            
+            // ✨ TRIK: Skontrolujeme, či je to Alžbeta Rolls-Roys
+            if(c.name === "Elizabeth" && c.surname === "Rolls-Roys") {
+                // Ak áno, Prepíšeme jej fotku na tvoju novú linku
+                return {...c, image: "https://img.topky.sk/320px/1164133.jpg", popis: veta}
+            }
+            
+            // Ostatných necháme tak
+            return {...c, popis: veta}
+        })
+        zobrazLudi(vsetciLudia)
+    } catch(e) {
+        console.error("Chyba načítania:", e)
+        mojDivVJs.innerHTML = "<p>Nefunguje backend. Prepáč. 🙏</p>"
+    }
 }
 
 function zobrazLudi(list){
     mojDivVJs.innerHTML=""
     list.forEach(c=>{
-        const card=document.createElement("div")
-        card.classList.add("card")
-
-        if(c.image){
-            const img=document.createElement("img")
-            img.src=c.image
-            card.appendChild(img)
-        }
-
-        const p=document.createElement("p")
-        p.textContent=c.name+" "+c.surname
-        card.appendChild(p)
-
+        const card=document.createElement("div"); card.classList.add("card")
+        if(c.image){ const img=document.createElement("img"); img.src=c.image; card.appendChild(img) }
+        const p=document.createElement("p"); p.textContent=c.name+" "+c.surname; card.appendChild(p)
         card.onclick=()=>otvorCloveka(c)
         mojDivVJs.appendChild(card)
     })
@@ -295,55 +260,60 @@ function otvorCloveka(c){
     personName.textContent=c.name+" "+c.surname
     modalImg.src=c.image
     popisok.textContent=c.popis
-    chatBox.innerHTML=""
+    const teraz = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    chatBox.innerHTML = `
+        <div style="text-align:center; font-size:10px; color:#aaa; margin-bottom:10px;">DNES ${teraz}</div>
+        <div class="message bot">Ahoj! To je super, že sme sa našli. 😊</div>
+    `;
 }
 
-function zatvorModal(){
-    modal.style.display="none"
-}
+function zatvorModal(){ modal.style.display="none" }
 
 function posliSpravu(){
     const text = chatInput.value
-    if(text.trim() === "") return
-
+    if(!text.trim()) return
     pridaj(text,"user")
     chatInput.value=""
-
     setTimeout(()=>{
-        const odpovede = ["Haha 😂","To je dobré 😄","Súhlasím!","Hmm 🤔","Poďme von 😎"]
-        const reply = odpovede[Math.floor(Math.random()*odpovede.length)]
-        pridaj(reply,"bot")
-    },1000)
+        const odpovede = ["Haha, to je milé! 😊", "Čo dnes robíš?", "Páči sa mi tvoj profil! 🔥", "Súhlasím!", "Dáme kávu? ☕"]
+        pridaj(odpovede[Math.floor(Math.random()*odpovede.length)], "bot")
+    }, 1000)
 }
 
-function pridaj(text,typ){
-    const msg=document.createElement("div")
-    msg.classList.add("message",typ)
-    msg.textContent=text
-    chatBox.appendChild(msg)
-    chatBox.scrollTop=chatBox.scrollHeight
+function rychlaSprava(emoji) {
+    chatInput.value = emoji;
+    posliSpravu();
 }
 
-search.addEventListener("input",()=>{
-    const t=search.value.toLowerCase()
-    zobrazLudi(vsetciLudia.filter(c =>
-        (c.name+" "+c.surname).toLowerCase().includes(t)
-    ))
-})
-
-function srdiecka(){
-    setInterval(()=>{
-        const heart=document.createElement("div")
-        heart.classList.add("heart")
-        heart.innerHTML="❤️"
-        heart.style.left=Math.random()*100+"vw"
-        document.getElementById("hearts").appendChild(heart)
-
-        setTimeout(()=>heart.remove(),6000)
-    },300)
+function pridaj(text, typ){
+    const msg = document.createElement("div"); msg.classList.add("message", typ); msg.textContent = text
+    chatBox.appendChild(msg); chatBox.scrollTop = chatBox.scrollHeight
 }
 
-srdiecka()
+chatInput.onkeydown = (e) => { if(e.key === "Enter") posliSpravu() }
+
+// VIAC FAREBNÝCH SRDIECOK
+function vytvorSrdiecko(){
+    const container = document.getElementById("heartsContainer");
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    const farby = ["#ff4b2b", "#ff6b6b", "#ff8fa3", "#ffb3c1", "#ff1493", "#e91e63"];
+    heart.style.color = farby[Math.floor(Math.random() * farby.length)];
+    const size = Math.random() * 20 + 10;
+    heart.style.fontSize = size + "px";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+    container.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+}
+setInterval(vytvorSrdiecko, 200);
+
+search.oninput = () => {
+    const t = search.value.toLowerCase()
+    zobrazLudi(vsetciLudia.filter(c => (c.name+" "+c.surname).toLowerCase().includes(t)))
+}
+
 nacitajLudi()
 </script>
 

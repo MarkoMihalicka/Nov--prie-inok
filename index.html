@@ -136,7 +136,7 @@ const chatInput = document.getElementById("chatInput")
 let vsetciLudia = []
 let aktualnaPostava = null;
 
-// ✨ TVOJA ŽIVÁ ADRESA NA RENDERY
+// ✨ TU JE TÁ ZMENA: Adresa tvojho backendu na Renderi
 const BACKEND_URL = "https://beckend-1-1fk0.onrender.com";
 
 async function nacitajLudi(){
@@ -147,7 +147,7 @@ async function nacitajLudi(){
         zobrazLudi(vsetciLudia);
     } catch(e) {
         console.error("Chyba:", e);
-        mojDivVJs.innerHTML = `<p style="color:red; font-weight:bold;">Nepodarilo sa pripojiť k AI mozgu na Renderi. 💀</p>`;
+        mojDivVJs.innerHTML = `<p style="color:red; font-weight:bold;">Nepodarilo sa načítať ľudí 😰 Checkni konzolu.</p>`;
     }
 }
 
@@ -192,9 +192,14 @@ async function posliSpravu(){
         });
 
         const data = await response.json();
-        setTimeout(() => {
-            pridaj(data.reply, "bot");
-        }, 300);
+        
+        if(data.reply) {
+            setTimeout(() => {
+                pridaj(data.reply, "bot");
+            }, 300);
+        } else {
+            pridaj("AI sa zasekla 💀 (Skontroluj kredit na OpenAI)", "bot");
+        }
 
     } catch (error) {
         console.error("Chyba:", error);
@@ -212,6 +217,7 @@ chatInput.onkeydown = (e) => { if(e.key === "Enter") posliSpravu() }
 // SRDIEČKA
 function vytvorSrdiecko(){
     const container = document.getElementById("heartsContainer");
+    if(!container) return;
     const heart = document.createElement("div");
     heart.classList.add("heart"); heart.innerHTML = "❤️";
     heart.style.left = Math.random() * 100 + "vw";
@@ -230,8 +236,4 @@ search.oninput = () => {
 nacitajLudi();
 </script>
 </body>
-<<<<<<< HEAD
 </html>
-=======
-</html>
->>>>>>> 7572e5082baee4d6b86e515d6dbd6870d9f44043

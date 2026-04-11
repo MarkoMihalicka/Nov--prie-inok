@@ -5,38 +5,55 @@
 <title>MARKCHAT ❤️ AI EDITION</title>
 
 <style>
+/* ✨ PREMIUM DATING APP BACKGROUND */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     text-align: center;
     margin: 0;
-    background-color: #ffeef0; 
-    background-image: url('image_0.png');
-    background-size: cover;
-    background-position: center bottom;
-    background-repeat: no-repeat;
+    background-color: #ffeef0;
+    background-image: 
+        radial-gradient(#ffcad1 0.8px, transparent 0.8px),
+        url('image_0.png');
+    background-size: 30px 30px, cover;
+    background-position: 0 0, center bottom;
+    background-repeat: repeat, no-repeat;
     background-attachment: fixed;
     min-height: 100vh;
     color: #333;
     overflow-x: hidden;
+    position: relative;
 }
 
-/* 🧊 HUD PANEL */
+/* 🌈 BLOBS NA POZADÍ */
+.bg-blob {
+    position: fixed; width: 600px; height: 600px; filter: blur(80px);
+    z-index: -1; opacity: 0.4; border-radius: 50%; animation: move 20s infinite alternate;
+}
+.blob-1 { background: #ff4b2b; top: -100px; right: -100px; }
+.blob-2 { background: #ff416c; bottom: -150px; left: -150px; animation-delay: -5s; }
+
+@keyframes move {
+    from { transform: translate(0, 0) scale(1) rotate(0deg); }
+    to { transform: translate(100px, 100px) scale(1.2) rotate(90deg); }
+}
+
+/* 🧊 HUD PANEL (PROFIL) */
 #hud-profile {
     position: fixed; top: 20px; left: 20px;
-    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);
     padding: 15px; border-radius: 20px; display: flex; align-items: center; gap: 15px;
-    box-shadow: 0 8px 32px rgba(255, 75, 43, 0.2); z-index: 100;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 75, 43, 0.15); z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.4);
 }
 .hud-avatar {
-    width: 60px; height: 60px; background: #ff4b2b;
+    width: 60px; height: 60px; background: linear-gradient(to right, #ff416c, #ff4b2b);
     clip-path: path('M 30,10 C 35,5 45,5 50,10 C 55,15 55,25 50,35 C 45,45 35,55 30,60 C 25,55 15,45 10,35 C 5,25 5,15 10,10 C 15,5 25,5 30,10 Z');
     display: flex; justify-content: center; align-items: center; color: white; font-size: 24px; font-weight: bold;
+    transition: transform 0.3s ease;
 }
-.stats { font-size: 20px; font-weight: bold; }
-.edit-btn { background: #ff4b2b; color: white; border: none; padding: 5px 12px; border-radius: 10px; font-size: 11px; cursor: pointer; }
+.stats { font-size: 20px; font-weight: bold; color: #ff4b2b; }
 
-/* ❤️ SRDIEČKA */
+/* ❤️ POLETUJÚCE SRDIEČKA */
 .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
 .heart { position: absolute; bottom: -100px; animation: floatUp linear infinite; }
 @keyframes floatUp {
@@ -45,59 +62,61 @@ body {
     100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
 }
 
-/* UI */
-h1 { margin-top: 40px; color: #ff4b2b; font-size: 56px; font-weight: 900; position: relative; z-index: 2; }
-#search { margin-top: 15px; padding: 15px; width: 300px; border-radius: 30px; border: 2px solid #ff4b2b; outline: none; position: relative; z-index: 2; }
+/* HLAVNÁ STRÁNKA */
+h1 { margin-top: 80px; color: #ff4b2b; font-size: 64px; font-weight: 900; position: relative; z-index: 2; letter-spacing: -2px; }
+#search { margin-top: 15px; padding: 18px; width: 320px; border-radius: 35px; border: none; outline: none; position: relative; z-index: 2; box-shadow: 0 10px 25px rgba(0,0,0,0.08); font-size: 16px; }
 #mojDivVJs { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 40px; padding: 40px; position: relative; z-index: 2; }
 
-/* KARTY */
+/* KARTY POSTÁV */
 .card {
-    background: white; width: 300px; height: 350px; cursor: pointer; transition: 0.4s;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    clip-path: path('M 150,50 C 180,20 240,20 270,50 C 300,80 300,140 260,200 C 230,250 180,290 150,310 C 120,290 70,250 40,200 C 0,140 0,80 30,50 C 60,20 120,20 150,50 Z');
-    display:flex; flex-direction:column; overflow:hidden;
+    background: transparent; width: 280px; height: 320px; cursor: pointer; transition: 0.4s;
+    clip-path: path('M 140,40 C 170,10 230,10 260,40 C 290,70 290,130 250,190 C 220,240 170,280 140,300 C 110,280 60,240 30,190 C -10,130 -10,70 20,40 C 50,10 110,10 140,40 Z');
 }
-.card:hover { transform: scale(1.08); }
-.card img { width:100%; height:70%; object-fit:cover; }
-.card p { font-weight:bold; margin-top: 15px; font-size: 18px; }
+.card:hover { transform: scale(1.08) rotate(2deg); filter: drop-shadow(0 20px 40px rgba(255, 75, 43, 0.4)); }
+.card img { width:100%; height:100%; object-fit:cover; object-position: center 20%; }
 
-/* MODAL & CHAT */
-#modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display:none; justify-content:center; align-items:center; z-index: 9999; }
-.modalContent { background: white; padding: 30px; border-radius: 30px; width: 90%; max-width: 850px; }
+/* CHAT MODAL */
+#modal { position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display:none; justify-content:center; align-items:center; z-index: 9999; }
+.modalContent { background: white; padding: 30px; border-radius: 40px; width: 95%; max-width: 900px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
 .profileLayout { display: flex; gap: 30px; text-align: left; }
-.leftSide { width: 40%; text-align: center; }
-.leftSide img { width: 100%; border-radius: 20px; }
-#popisok { background: #fff0f2; padding: 10px; border-radius: 10px; margin-top: 10px; font-size: 0.85em; color: #666; font-style: italic; }
+.leftSide { width: 35%; text-align: center; }
+.leftSide img { width: 100%; border-radius: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+.sub-info { font-size: 14px; color: #888; margin-top: -5px; margin-bottom: 10px; }
+#popisok { background: #fff0f2; padding: 12px; border-radius: 15px; font-size: 0.9em; color: #ff416c; font-weight: 600; border: 1px solid #ffcad1; }
 
-.rightSide { width: 60%; display: flex; flex-direction: column; }
-#chatBox {
-    height: 350px; overflow-y: auto; background: #fff;
-    border: 1px solid #ffe0e5; border-radius: 20px; padding: 15px; display: flex; flex-direction: column; gap: 12px;
-}
-.message { padding: 10px 16px; font-size: 14px; max-width: 85%; border-radius: 18px; }
-.user { background: #ff4b2b; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-.bot { background: #eee; color: #444; align-self: flex-start; border-bottom-left-radius: 2px; }
+.rightSide { width: 65%; display: flex; flex-direction: column; }
+#chatBox { height: 300px; overflow-y: auto; background: #fafafa; border-radius: 25px; padding: 20px; display: flex; flex-direction: column; gap: 12px; border: 1px solid #eee; }
+.message { padding: 12px 18px; font-size: 14px; max-width: 85%; border-radius: 20px; }
+.user { background: linear-gradient(to right, #ff416c, #ff4b2b); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.bot { background: white; color: #444; align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-#chatInputArea { display: flex; gap: 10px; margin-top: 15px; }
-#chatInput { flex: 1; padding: 12px 20px; border-radius: 30px; border: 1px solid #eee; outline: none; }
-.send-btn { background: #ff4b2b; color: white; border: none; width: 45px; height: 45px; border-radius: 50%; cursor: pointer; }
+/* ✨ ICEBREAKERS */
+#icebreakers { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+.ice-btn { background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 15px; font-size: 11px; cursor: pointer; color: #555; transition: 0.2s; }
+.ice-btn:hover { background: #ff4b2b; color: white; }
 
-.close-btn { margin-top: 25px; background: #333; color: white; padding: 12px 30px; border: none; border-radius: 15px; cursor: pointer; width: 100%; }
+#chatInputArea { display: flex; gap: 12px; margin-top: 15px; }
+#chatInput { flex: 1; padding: 15px 25px; border-radius: 30px; border: 1px solid #eee; outline: none; background: #f9f9f9; }
+.send-btn { background: #ff4b2b; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px; }
+.close-btn { margin-top: 15px; background: #eee; color: #666; padding: 10px; border: none; border-radius: 20px; cursor: pointer; width: 100%; font-weight: bold; transition: 0.3s; }
+.close-btn:hover { background: #333; color: white; }
 </style>
 </head>
 
 <body>
 
+<div class="bg-blob blob-1"></div>
+<div class="bg-blob blob-2"></div>
+<div class="hearts-container" id="heartsContainer"></div>
+
 <div id="hud-profile">
-    <div class="hud-avatar">M</div>
+    <div class="hud-avatar" id="displayInitial">M</div>
     <div class="hud-info">
-        <h4>Tvoj Profil</h4>
-        <div class="stats">❤️ <span id="match-count">128</span></div>
-        <button class="edit-btn">UPRAVIŤ</button>
+        <h4 id="displayName" style="margin:0; font-size: 14px;">Môj Profil</h4>
+        <div class="stats">❤️ <span id="match-count">0</span></div>
+        <button onclick="upravitMeno()" style="background:#333; color:white; border:none; padding:4px 8px; border-radius:8px; font-size:10px; cursor:pointer;">UPRAVIŤ</button>
     </div>
 </div>
-
-<div class="hearts-container" id="heartsContainer"></div>
 
 <h1>MARKCHAT ❤️</h1>
 <input id="search" placeholder="Hľadať spriaznenú dušu...">
@@ -108,11 +127,18 @@ h1 { margin-top: 40px; color: #ff4b2b; font-size: 56px; font-weight: 900; positi
         <div class="profileLayout">
             <div class="leftSide">
                 <img id="modalImg">
-                <h2 id="personName"></h2>
-                <div id="popisok"></div>
-            </div>
+                <h2 id="personName" style="margin-bottom:5px;"></h2>
+                <div id="personSubInfo" class="sub-info"></div> <div id="popisok"></div> </div>
             <div class="rightSide">
                 <div id="chatBox"></div>
+                
+                <div id="icebreakers">
+                    <button class="ice-btn" onclick="sendIcebreaker('Ahoj! Ako sa dnes máš? 😊')">Ahoj! Ako sa máš? 😊</button>
+                    <button class="ice-btn" onclick="sendIcebreaker('Páči sa mi tvoja fotka! Čo máš na nej najradšej? ✨')">Pekná fotka! ✨</button>
+                    <button class="ice-btn" onclick="sendIcebreaker('Máš zaujímavé záľuby, povieš mi o tom viac? 🍕')">Zaujímavé záľuby! 🍕</button>
+                    <button class="ice-btn" onclick="sendIcebreaker('Aké máš plány na dnešný večer? 🌙')">Plány na večer? 🌙</button>
+                </div>
+
                 <div id="chatInputArea">
                     <input id="chatInput" placeholder="Napíš správu...">
                     <button class="send-btn" onclick="posliSpravu()">➤</button>
@@ -128,6 +154,7 @@ const mojDivVJs = document.getElementById("mojDivVJs")
 const search = document.getElementById("search")
 const modal = document.getElementById("modal")
 const personName = document.getElementById("personName")
+const personSubInfo = document.getElementById("personSubInfo")
 const modalImg = document.getElementById("modalImg")
 const popisok = document.getElementById("popisok")
 const chatBox = document.getElementById("chatBox")
@@ -135,86 +162,11 @@ const chatInput = document.getElementById("chatInput")
 
 let vsetciLudia = []
 let aktualnaPostava = null;
+let mojeLajky = 0;
 
-// ✨ TU JE TÁ ZMENA: Adresa tvojho backendu na Renderi
 const BACKEND_URL = "https://beckend-1-1fk0.onrender.com";
 
-async function nacitajLudi(){
-    try {
-        const res = await fetch(`${BACKEND_URL}/students`);
-        const data = await res.json();
-        vsetciLudia = data.students;
-        zobrazLudi(vsetciLudia);
-    } catch(e) {
-        console.error("Chyba:", e);
-        mojDivVJs.innerHTML = `<p style="color:red; font-weight:bold;">Nepodarilo sa načítať ľudí 😰 Checkni konzolu.</p>`;
-    }
-}
-
-function zobrazLudi(list){
-    mojDivVJs.innerHTML=""
-    list.forEach(c=>{
-        const card=document.createElement("div"); card.classList.add("card")
-        if(c.image){ const img=document.createElement("img"); img.src=c.image; card.appendChild(img) }
-        const p=document.createElement("p"); p.textContent=c.name+" "+c.surname; card.appendChild(p)
-        card.onclick=()=>otvorCloveka(c)
-        mojDivVJs.appendChild(card)
-    })
-}
-
-function otvorCloveka(c){
-    aktualnaPostava = c;
-    modal.style.display="flex"
-    personName.textContent=c.name+" "+c.surname
-    modalImg.src=c.image
-    popisok.textContent = c.personality;
-    chatBox.innerHTML = `<div class="message bot">Ahoj! Ja som ${c.name}. Napíš mi niečo... 😉</div>`;
-}
-
-function zatvorModal(){ modal.style.display="none" }
-
-async function posliSpravu(){
-    const text = chatInput.value;
-    if(!text.trim()) return;
-
-    pridaj(text, "user");
-    chatInput.value = "";
-
-    try {
-        const response = await fetch(`${BACKEND_URL}/chat`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                message: text,
-                character: aktualnaPostava,
-                mood: "neutral"
-            })
-        });
-
-        const data = await response.json();
-        
-        if(data.reply) {
-            setTimeout(() => {
-                pridaj(data.reply, "bot");
-            }, 300);
-        } else {
-            pridaj("AI sa zasekla 💀 (Skontroluj kredit na OpenAI)", "bot");
-        }
-
-    } catch (error) {
-        console.error("Chyba:", error);
-        pridaj("Backend neodpovedá... Skontroluj logy na Renderi. 💀", "bot");
-    }
-}
-
-function pridaj(text, typ){
-    const msg = document.createElement("div"); msg.classList.add("message", typ); msg.textContent = text
-    chatBox.appendChild(msg); chatBox.scrollTop = chatBox.scrollHeight
-}
-
-chatInput.onkeydown = (e) => { if(e.key === "Enter") posliSpravu() }
-
-// SRDIEČKA
+// ❤️ GENERÁTOR SRDIEČOK
 function vytvorSrdiecko(){
     const container = document.getElementById("heartsContainer");
     if(!container) return;
@@ -226,7 +178,109 @@ function vytvorSrdiecko(){
     container.appendChild(heart);
     setTimeout(() => heart.remove(), 7000);
 }
-setInterval(vytvorSrdiecko, 300);
+setInterval(vytvorSrdiecko, 400);
+
+// 📈 LAJKY A HUD ANIMÁCIA
+setInterval(() => {
+    mojeLajky += Math.floor(Math.random() * 3) + 1;
+    document.getElementById("match-count").textContent = mojeLajky;
+    const avatar = document.querySelector(".hud-avatar");
+    if(avatar) {
+        avatar.style.transform = "scale(1.1)";
+        setTimeout(() => avatar.style.transform = "scale(1)", 200);
+    }
+}, 6000);
+
+function upravitMeno() {
+    const noveMeno = prompt("Zadaj svoje nové meno:");
+    if (noveMeno && noveMeno.trim() !== "") {
+        document.getElementById("displayName").textContent = noveMeno;
+        document.getElementById("displayInitial").textContent = noveMeno.charAt(0).toUpperCase();
+    }
+}
+
+// ℹ️ GENERÁTOR OSOBNÝCH ÚDAJOV
+function ziskajInfo(clovek) {
+    const seed = clovek.name.length + (clovek.surname ? clovek.surname.length : 0);
+    const vek = 19 + (seed % 9); // Vek 19 - 27
+    const mesta = ["Bratislava", "Košice", "Nitra", "Žilina", "Trnava", "Banská Bystrica", "Prešov", "Viedeň"];
+    const mesto = mesta[seed % mesta.length];
+    
+    const mix = ["🌲 Milovník turistiky.", "🍕 Gurmán a kulinár.", "📚 Knihomoľ.", "🧘 Fanúšik jogy.", "🐕 Psíčkar.", "🏎️ Nadšenec do áut.", "🎧 Hudba je môj život.", "🏝️ Cestovateľ dušou."];
+    let zaluba = "";
+    if (clovek.name === "Adrian") zaluba = "⚽ Fitness a aktívny šport.";
+    else if (clovek.name === "Elizabeth") zaluba = "✨ Móda, luxus a dobré víno.";
+    else zaluba = mix[seed % mix.length];
+    
+    return { vek, mesto, zaluba };
+}
+
+async function nacitajLudi(){
+    try {
+        const res = await fetch(`${BACKEND_URL}/students`);
+        const data = await res.json();
+        vsetciLudia = data.students;
+        zobrazLudi(vsetciLudia);
+    } catch(e) {
+        mojDivVJs.innerHTML = `<p style="background:white; padding:20px; border-radius:20px;">Prebúdzam server... ❤️</p>`;
+    }
+}
+
+function zobrazLudi(list){
+    mojDivVJs.innerHTML=""
+    list.forEach(c=>{
+        const card=document.createElement("div"); card.classList.add("card")
+        if(c.image){ 
+            const img=document.createElement("img"); img.src=c.image; 
+            if(c.name === "Elizabeth") img.style.objectPosition = "center 60%"; 
+            if(c.name === "Adrian") img.style.objectPosition = "center 45%";
+            card.appendChild(img) 
+        }
+        card.onclick=()=>otvorCloveka(c)
+        mojDivVJs.appendChild(card)
+    })
+}
+
+function otvorCloveka(c){
+    aktualnaPostava = c;
+    const info = ziskajInfo(c);
+    modal.style.display="flex"
+    personName.textContent=c.name+" "+c.surname
+    personSubInfo.textContent = `${info.vek} rokov • ${info.mesto}`;
+    modalImg.src=c.image
+    popisok.textContent = info.zaluba;
+    chatBox.innerHTML = `<div class="message bot">Práve si dostal match s ${c.name}! Napíš niečo pekné... ❤️</div>`;
+}
+
+function sendIcebreaker(text) {
+    chatInput.value = text;
+    posliSpravu();
+}
+
+function zatvorModal(){ modal.style.display="none" }
+
+async function posliSpravu(){
+    const text = chatInput.value;
+    if(!text.trim()) return;
+    pridaj(text, "user");
+    chatInput.value = "";
+    try {
+        const response = await fetch(`${BACKEND_URL}/chat`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text, character: aktualnaPostava, mood: "neutral" })
+        });
+        const data = await response.json();
+        if(data.reply) setTimeout(() => { pridaj(data.reply, "bot"); }, 400);
+    } catch (error) { pridaj("Chyba spojenia... 💀", "bot"); }
+}
+
+function pridaj(text, typ){
+    const msg = document.createElement("div"); msg.classList.add("message", typ); msg.textContent = text
+    chatBox.appendChild(msg); chatBox.scrollTop = chatBox.scrollHeight
+}
+
+chatInput.onkeydown = (e) => { if(e.key === "Enter") posliSpravu() }
 
 search.oninput = () => {
     const t = search.value.toLowerCase()

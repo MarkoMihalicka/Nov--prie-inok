@@ -219,7 +219,7 @@ setInterval(updateStats, 5000)
 // ✨ UPRAVENÁ FUNKCIA: Načítanie a zmena Alžbetinej fotky
 async function nacitajLudi(){
     try {
-        const res = await fetch("https://markomihalicka.github.io/moj-prvy-backend/data.json")
+        const res = await fetch("https://markomihalicka.github.io/beckend/data.json")
         const data = await res.json()
         
         vsetciLudia = data.students.map(c => {

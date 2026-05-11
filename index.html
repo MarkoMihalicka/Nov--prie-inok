@@ -164,7 +164,7 @@ let vsetciLudia = []
 let aktualnaPostava = null;
 let mojeLajky = 0;
 
-const BACKEND_URL = "https://beckend-markchat.onrender.com";
+const BACKEND_URL = "https://beckend-markchat.onrender.com/students";
 
 // ❤️ GENERÁTOR SRDIEČOK
 function vytvorSrdiecko(){
@@ -217,7 +217,7 @@ function ziskajInfo(clovek) {
 
 async function nacitajLudi(){
     try {
-        const res = await fetch(`${BACKEND_URL}/students`);
+        const res = await fetch(`${BACKEND_URL}`);
         const data = await res.json();
         vsetciLudia = data.students;
         zobrazLudi(vsetciLudia);
